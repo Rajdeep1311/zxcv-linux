@@ -1,0 +1,24 @@
+name: Remote Build Agent
+
+on:
+  workflow_dispatch
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup nix
+        run: |
+          sudo apt-get install -y nix
+          sudo nix-store --init
+
+          sudo mkdir -p /etc/nix
+          sudo openssl genrsa -out /etc/nix/signing-key.sec 2048
+          sudo chmod 600 /etc/nix/signing-key.sec
+
+          echo "=============== RSA PUBLIC KEY START ==============="
+          sudo openssl rsa -in /etc/nix/signing-key.sec -pubout
+          echo "=============== RSA PUBLIC KEY END   ==============="
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
