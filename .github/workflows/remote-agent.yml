@@ -11,6 +11,8 @@ jobs:
         run: |
           sudo apt-get install -y nix
           sudo nix-store --init
+          sudo nix-channel --add https://nixos.org/channels/nixpkgs-unstable
+          sudo nix-channel --update
 
           sudo mkdir -p /etc/nix
           sudo openssl genrsa -out /etc/nix/signing-key.sec 2048
